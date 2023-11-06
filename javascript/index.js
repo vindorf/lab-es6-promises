@@ -109,48 +109,8 @@ async function makeBroccoli() {
   document.querySelector("#broccoliImg").hidden = false;
 }
 makeBroccoli();
+
 /*
-Promise.all([obtainInstruction("brusselsSprouts", 0)])
- 
-
-  .then((step0)=>{
-    document.querySelector("#brusselsSprouts").innerHTML += `<li>${step0}</li>`
-    return obtainInstruction("brusselsSprouts", 1);
-  } )
-  .then((step1)=>{
-    document.querySelector("#brusselsSprouts").innerHTML += `<li>${step1}</li>`
-    return obtainInstruction("brusselsSprouts", 2);
-  } )
-  .then((step2)=>{
-    document.querySelector("#brusselsSprouts").innerHTML += `<li>${step2}</li>`
-    return obtainInstruction("brusselsSprouts", 3);
-  } )
-  .then((step3)=>{
-    document.querySelector("#brusselsSprouts").innerHTML += `<li>${step3}</li>`
-    return obtainInstruction("brusselsSprouts", 4);
-  } )
-  .then((step4)=>{
-    document.querySelector("#brusselsSprouts").innerHTML += `<li>${step4}</li>`
-    return obtainInstruction("brusselsSprouts", 5);
-  } )
-  .then((step5)=>{
-    document.querySelector("#brusselsSprouts").innerHTML += `<li>${step5}</li>`
-    return obtainInstruction("brusselsSprouts", 6);
-  } )
-  .then((step6)=>{
-    document.querySelector("#brusselsSprouts").innerHTML += `<li>${step6}</li>`
-    return obtainInstruction("brusselsSprouts", 7);
-  } )
-  .then((step7)=>{
-    document.querySelector("#brusselsSprouts").innerHTML += `<li>${step7}</li>`
-    document.querySelector("#brusselsSprouts").innerHTML += `<li>is ready</li>`
-    document.querySelector("#brusselsSproutsImg").hidden = false;;
-  } )
-   .catch(error => {
-     console.error("Ein Fehler ist aufgetreten: " + error);
-   });
-
-*/
 async function brSp() {
 
   for(let i=0;i< brusselsSprouts.length;i++) {
@@ -171,3 +131,33 @@ async function brSp() {
 
 
 Promise.all([brSp()])
+*/
+
+async function getAllInstructions(food) {
+  const promises = [];
+
+  for (let step = 0; step < brusselsSprouts.length; step++) {
+    promises.push(obtainInstruction(food, step));
+  }
+
+  try {
+    const instructions = await Promise.all(promises);
+    return instructions;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
+getAllInstructions("brusselsSprouts")
+  .then((instructions) => {
+    instructions.forEach((instruction, index) => {
+      document.querySelector("#brusselsSprouts").innerHTML += `<li>${instruction}</li>`;
+      
+    });
+    document.querySelector("#brusselsSprouts").innerHTML += `<li>is ready</li>`
+    document.querySelector("#brusselsSproutsImg").hidden = false;;
+  })
+  .catch((error) => {
+    console.error(error);
+  });
